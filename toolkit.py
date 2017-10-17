@@ -1,5 +1,33 @@
 import urllib.request
-import json
+from bs4 import BeautifulSoup
+
+ponct_liste = ['.',',','!','?',';',':']
+midi_liste = ["midi","dejeuner","déjeuner","dejeune"]
+cafete_liste = ["cafete","cafeteriat","cafetariat","bar","cafet"]
+horaire_liste = ["horaire","horaires"]
+
+#DOWNLOAD MENU
+def download_menu():
+    req = urllib.request.Request('http://services.telecom-bretagne.eu/rak/')
+    the_page = urllib.request.urlopen(req)
+    page = the_page.read()
+    soup = BeautifulSoup(page, 'html.parser')
+    plats = soup.find_all("td", attrs={"class" : "col-md-4"})
+    nom_plats = soup.find_all("td", attrs={"align" : "left"})
+    result = []
+    premier_plat=0
+    for i in range(len(plats)):
+        a = str(plats[i].getText())
+        b = str(nom_plats[i].getText())
+        result.append([a[1:-1],b[2:-2]])
+        if b[2:-2]=="Plat 1":
+            if premier_plat==1:
+                index = i
+            else:
+                premier_plat+=1
+    return result,index
+
+
 
 # BOITE A OUTILS
 def depaquetage(sender,paquet,me,ponct_liste):
@@ -61,4 +89,14 @@ def extract_ponct(texte,ponct_liste):
                 l=l+'e'
             else:
                 l=l+texte[i].lower() #met en minuscule
-    return l 
+    return l
+
+def build_choix():
+    choix_dict = {}
+    list_menu = ["Menu midi", "Menu soir", "Menu cafete", "Horaires", "Partager"]
+    i=0
+    for item in list_menu:
+        choix_dict[i] = list_menu
+        i+=1
+    return choix_dict
+

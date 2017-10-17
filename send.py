@@ -1,5 +1,6 @@
+import requests
+
 # POUR GENERER DES PAYLOAD :
-from toolkit import recherche_similitude
 
 def send_share(sender):
   texte = "Pyrak est un chatbot permettant de demander le menu du RAK, restaurant de l'IMT Atlantique"
@@ -37,7 +38,7 @@ def send_share(sender):
 def send_text (sender,texte):
 
     return {'recipient': {'id': sender}, 'message': {'text': texte}}
-def send_choix_multiple5(sender,texte,choix1,choix2,choix3,choix4,choix5):
+def send_choix_multiple5(sender,texte,choix_dict):
   return {
   "recipient":{
     "id":sender
@@ -47,29 +48,41 @@ def send_choix_multiple5(sender,texte,choix1,choix2,choix3,choix4,choix5):
     "quick_replies":[
       {
         "content_type":"text",
-        "title":choix1,
-        "payload":choix1,
+        "title":choix_dict[1],
+        "payload":choix_dict[1],
       },
       {
         "content_type":"text",
-        "title":choix2,
-        "payload":choix2,
+        "title":choix_dict[2],
+        "payload":choix_dict[2],
       },
       {
         "content_type":"text",
-        "title":choix3,
-        "payload":choix3,
+        "title":choix_dict[3],
+        "payload":choix_dict[3],
       },
       {
         "content_type":"text",
-        "title":choix4,
-        "payload":choix4,
+        "title":choix_dict[4],
+        "payload":choix_dict[4],
       },
       {
         "content_type":"text",
-        "title":choix5,
-        "payload":choix5,
+        "title":choix_dict[5],
+        "payload":choix_dict[5],
       }
     ]
   }
  }
+
+# ENVOYER UN PAYLOAD
+def send_paquet(token,payload):
+    r = requests.post('https://graph.facebook.com/v2.6/me/messages/?access_token=' + token, json=payload)
+    print(r.text) #affiche la reponse à l'envoi; pratique si veut l'ID ou voir si bien envoyé
+    pass
+
+def sender(token, texte, choix_dict):
+    payload = send_choix_multiple5(sender, texte, choix_dict)
+    send_paquet(token, payload)
+    print('Repas soir envoyé')
+    return 'nothing'
