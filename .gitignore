@@ -1,1 +1,3 @@
 chatenv/
+.idea/*
+__pycache__/*
