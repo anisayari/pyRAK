@@ -44,7 +44,7 @@ def depaquetage(sender,paquet,me,ponct_liste):
             message = paquet['entry'][0]['messaging'][0]['message']
             if 'text' in message.keys():
                 texte = message['text']  # Ce qu on nous a envoyé
-                texte_notponct = extract_ponct(texte,ponct_liste) # On retire la ponctuation
+                texte_notponct = extract_ponct(texte) # On retire la ponctuation
                 mots_du_msg = texte_notponct.split(' ') # Nous séparons les mots
                 return ['text_msg', texte, mots_du_msg]
             elif 'attachments' in message.keys():
