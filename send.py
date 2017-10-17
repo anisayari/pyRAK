@@ -50,6 +50,11 @@ def send_choix_multiple5(sender,texte,choix_dict):
     "quick_replies":[
       {
         "content_type":"text",
+        "title":choix_dict[0],
+        "payload":choix_dict[0],
+      },
+      {
+        "content_type":"text",
         "title":choix_dict[1],
         "payload":choix_dict[1],
       },
@@ -67,11 +72,6 @@ def send_choix_multiple5(sender,texte,choix_dict):
         "content_type":"text",
         "title":choix_dict[4],
         "payload":choix_dict[4],
-      },
-      {
-        "content_type":"text",
-        "title":choix_dict[5],
-        "payload":choix_dict[5],
       }
     ]
   }
@@ -83,7 +83,7 @@ def send_paquet(token,payload):
     print(r.text) #affiche la reponse a l'envoi; pratique si veut l'ID ou voir si bien envoye
     return 'nothing'
 
-def sender(token, texte, choix_dict):
+def senderator(token, sender, texte, choix_dict):
     payload = send_choix_multiple5(sender, texte, choix_dict)
     send_paquet(token, payload)
     print('Repas')

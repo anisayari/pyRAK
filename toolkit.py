@@ -7,7 +7,7 @@ import unidecode
 
 ponct_liste = ['.',',','!','?',';',':']
 midi_liste = ["midi","dejeuner","déjeuner","dejeune"]
-cafete_liste = ["cafete","cafeteriat","cafetariat","bar","cafet"]
+cafete_liste = ["cafet","cafeteriat","cafetariat","bar","cafet"]
 horaire_liste = ["horaire","horaires"]
 
 #DOWNLOAD MENU
@@ -73,42 +73,36 @@ def depaquetage(sender,paquet,me,ponct_liste):
             print(paquet)
             return ['unknow_msg'] ## PAS UTILISE ENCORE
 
-def recherche_similitude(chercher,liste):
-    for i in range(len(chercher)):
-        for j in range(len(liste)):
-            if chercher[i]==liste[j]:
-                return j    
-def similitudes (a,b):
 
-    return list(set(a).intersection(b)) 
-def extract_ponct(texte,ponct_liste):
-    texte = unidecode.unidecode(texte)
+def similitudes (a,b):
+    return list(set(a).intersection(b))
+
+def extract_ponct(texte):
+    texte = unidecode.unidecode(texte).lower()
     return texte
 
 def build_choix():
     choix_dict = {}
-    list_menu = ["Menu midi", "Menu soir", "Menu cafete", "Horaires", "Partager"]
+    list_menu = ["Menu midi", "Menu soir", "Menu cafet", "Horaires", "Partager"]
     i=0
     for item in list_menu:
         choix_dict[i] = item
         i+=1
     return choix_dict
 
-def construct_text(sender,menu,mots_du_msg, choix_dict, index):
+def construct_text(menu,mots_du_msg, index):
     texte = ''
     if ("menu" in mots_du_msg):
         if (similitudes(midi_liste, mots_du_msg) != []):
             texte = "Menu du midi :" + '\n\n'
             for i in range(index):
                 texte = texte + menu[i][1] + " : " + menu[i][0] + '\n\n'
-                sender(sender, texte, choix_dict)
         elif ("soir" in mots_du_msg):
             texte = "Menu du soir :" + '\n\n'
             for i in range(index, len(menu) - 6):
                 texte = texte + menu[i][1] + " : " + menu[i][0] + '\n\n'
-                sender(sender, texte, choix_dict)
         elif similitudes(cafete_liste, mots_du_msg) != []:
-            texte = "Menu de la cafete :" + '\n' + '\n' + \
+            texte = "Menu de la cafet :" + '\n' + '\n' + \
                     menu[len(menu) - 6][1] + " : " + \
                     menu[len(menu) - 6][0] + '\n\n' + \
                     menu[len(menu) - 5][1] + " : " + \

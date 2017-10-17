@@ -1,10 +1,10 @@
 # coding: utf-8
 import traceback
-from toolkit import *
 import json
 from config import me, token, FB_VERIFY_TOKEN
 from flask import request
-
+from send import senderator, send_share, send_paquet
+from toolkit import depaquetage, build_choix, ponct_liste, construct_text, download_menu
 
 def webhook_get():
     choix_dict = build_choix()
@@ -16,8 +16,11 @@ def webhook_get():
         if type_msg_recu == 'text_msg':
             type_msg_recu, texte, mots_du_msg = depaquet
             menu, index = download_menu()
-            text = construct_text(sender, menu, mots_du_msg, choix_dict, index)
-            sender(sender, text, choix_dict)
+            text = construct_text(menu,mots_du_msg, index)
+            if text == "partager":
+                send_paquet(token, send_share(sender))
+                return "nothing"
+            senderator(token,sender, text, choix_dict)
         else:
             print(type_msg_recu)
     except Exception :
