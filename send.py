@@ -16,7 +16,7 @@ def send_share(sender):
         "buttons":[
             {
             "type": "element_share",
-            "share_contents": { 
+            "share_contents": {
                 "attachment": {
                     "type": "template",
                     "payload": {
@@ -27,7 +27,7 @@ def send_share(sender):
                             "default_action": {"type": "web_url","url": 'https://m.me/menupyrak/'},
                             "buttons": [{
                                   "type": "web_url",
-                                  "url": 'https://m.me/menupyrak/', 
+                                  "url": 'https://m.me/menupyrak/',
                                   "title": 'Se lancer !'
                                 }]
                             }]
@@ -81,7 +81,7 @@ def send_choix_multiple5(sender,texte,choix_dict):
 def send_paquet(token,payload):
     r = requests.post('https://graph.facebook.com/v2.6/me/messages/?access_token=' + token, json=payload)
     print(r.text) #affiche la reponse a l'envoi; pratique si veut l'ID ou voir si bien envoye
-    pass
+    return 'nothing'
 
 def sender(token, texte, choix_dict):
     payload = send_choix_multiple5(sender, texte, choix_dict)

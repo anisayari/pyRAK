@@ -2,6 +2,8 @@
 
 import urllib.request
 from bs4 import BeautifulSoup
+import unidecode
+
 
 ponct_liste = ['.',',','!','?',';',':']
 midi_liste = ["midi","dejeuner","déjeuner","dejeune"]
@@ -80,18 +82,8 @@ def similitudes (a,b):
 
     return list(set(a).intersection(b)) 
 def extract_ponct(texte,ponct_liste):
-    l=''
-    for i in range(len(texte)):
-        if texte[i] in ponct_liste: #supprime la ponctuation
-            pass
-        elif texte[i]=="'":
-            l=l+' '
-        else:
-            if ord(texte[i]) in [232,233,234,235]: #remplacer les accents é par e
-                l=l+'e'
-            else:
-                l=l+texte[i].lower() #met en minuscule
-    return l
+    texte = unidecode.unidecode(texte)
+    return texte
 
 def build_choix():
     choix_dict = {}

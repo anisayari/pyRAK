@@ -1,6 +1,6 @@
 # coding: utf-8
 from flask import Flask, render_template, request
-from config import me, token, FB_VERIFY_TOKEN
+from config import FB_VERIFY_TOKEN
 from app import webhook_get
 
 app = Flask("app")  #instance de la classe FLask. premier argument est le nom
@@ -17,11 +17,13 @@ print('    |__/       \_/  \_______/   |__/  |_/    ')
 
 @app.route('/', methods=['POST']) #A decorator that is used to register a view function for a given URL
 # rule.Ici rule = / et en option les methodes assignées à ce rule
-def start_get():
-    webhook_get(me, token, request)
+def start_post():
+    return webhook_get()
 
 @app.route('/', methods=['GET']) #A decorator that is used to register a view function for a given URL
-def start_post():
+def start_get():
+    print(request.args.get('hub.verify_token'))
+    print(FB_VERIFY_TOKEN)
     if request.args.get('hub.verify_token') == FB_VERIFY_TOKEN:
         return request.args.get('hub.challenge')
     return "Wrong Verify Token"
