@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import os
 #TOKEN de prod
 token = os.environ.get('FB_ACCESS_TOKEN')

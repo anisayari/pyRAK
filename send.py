@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import requests
 
 # POUR GENERER DES PAYLOAD :
@@ -78,11 +80,11 @@ def send_choix_multiple5(sender,texte,choix_dict):
 # ENVOYER UN PAYLOAD
 def send_paquet(token,payload):
     r = requests.post('https://graph.facebook.com/v2.6/me/messages/?access_token=' + token, json=payload)
-    print(r.text) #affiche la reponse à l'envoi; pratique si veut l'ID ou voir si bien envoyé
+    print(r.text) #affiche la reponse a l'envoi; pratique si veut l'ID ou voir si bien envoye
     pass
 
 def sender(token, texte, choix_dict):
     payload = send_choix_multiple5(sender, texte, choix_dict)
     send_paquet(token, payload)
-    print('Repas soir envoyé')
+    print('Repas')
     return 'nothing'

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import urllib.request
 from bs4 import BeautifulSoup
 
@@ -67,9 +69,9 @@ def depaquetage(sender,paquet,me,ponct_liste):
         else : 
             print('Non identifié')
             print(paquet)
-            return ['unknow_msg'] ## PAS UTILISE ENCORE        
+            return ['unknow_msg'] ## PAS UTILISE ENCORE
+
 def recherche_similitude(chercher,liste):
-    position=-1
     for i in range(len(chercher)):
         for j in range(len(liste)):
             if chercher[i]==liste[j]:
@@ -96,7 +98,54 @@ def build_choix():
     list_menu = ["Menu midi", "Menu soir", "Menu cafete", "Horaires", "Partager"]
     i=0
     for item in list_menu:
-        choix_dict[i] = list_menu
+        choix_dict[i] = item
         i+=1
     return choix_dict
+
+def construct_text(sender,menu,mots_du_msg, choix_dict, index):
+    texte = ''
+    if ("menu" in mots_du_msg):
+        if (similitudes(midi_liste, mots_du_msg) != []):
+            texte = "Menu du midi :" + '\n\n'
+            for i in range(index):
+                texte = texte + menu[i][1] + " : " + menu[i][0] + '\n\n'
+                sender(sender, texte, choix_dict)
+        elif ("soir" in mots_du_msg):
+            texte = "Menu du soir :" + '\n\n'
+            for i in range(index, len(menu) - 6):
+                texte = texte + menu[i][1] + " : " + menu[i][0] + '\n\n'
+                sender(sender, texte, choix_dict)
+        elif similitudes(cafete_liste, mots_du_msg) != []:
+            texte = "Menu de la cafete :" + '\n' + '\n' + \
+                    menu[len(menu) - 6][1] + " : " + \
+                    menu[len(menu) - 6][0] + '\n\n' + \
+                    menu[len(menu) - 5][1] + " : " + \
+                    menu[len(menu) - 5][0] + '\n\n' + \
+                    menu[len(menu) - 4][1] + " : " + \
+                    menu[len(menu) - 4][0] + '\n\n' + \
+                    menu[len(menu) - 3][1] + " : " + \
+                    menu[len(menu) - 3][0] + '\n\n' + \
+                    menu[len(menu) - 2][1] + " : " + \
+                    menu[len(menu) - 2][0] + '\n\n' + \
+                    menu[len(menu) - 1][1] + " : " + \
+                    menu[len(menu) - 1][0]
+    else:
+        if similitudes(horaire_liste, mots_du_msg) != []:
+            texte = "RAK :\nLundi au vendredi \n" \
+                    "11h30 - 13h15\n19h15 - 20h00\n\n" \
+                    "Samedi - Dimanche - Jours feries \n" \
+                    "12h15 - 13h\n19h15 - 20h00\n\n" \
+                    "Vacances scolaires \n11h45 - 13h" \
+                    "\n19h30 - 20h\n\n" \
+                    "BAR :\nLundi au vendredi" \
+                    " \n7h30 - 16h45"
+        elif ("partager" in mots_du_msg):
+            texte = "partager"
+        elif ("menu" in mots_du_msg):
+            texte = "Tu veux quel type de menu ? Appuie sur les boutons ci dessous"
+        else:
+            texte = "Je suis là que pour donner le menu ne m'en demandes pas trop! 😉"
+
+    return texte
+
 
